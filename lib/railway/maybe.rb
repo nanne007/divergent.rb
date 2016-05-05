@@ -1,5 +1,6 @@
 require 'singleton'
 
+require_relative 'errors'
 require_relative 'monad'
 
 module Railway
@@ -227,7 +228,7 @@ module Railway
     end
 
     def get
-      raise StandardError, 'no such element in None.get'
+      raise NoSuchElementError, 'no such element in None.get'
     end
 
     def to_s

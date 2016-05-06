@@ -238,3 +238,11 @@ module Railway
     alias inspect to_s
   end.instance.freeze
 end
+
+module Railway
+  def Maybe(v)
+    Maybe.unit(v)
+  end
+
+  module_function :Maybe
+end

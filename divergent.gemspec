@@ -11,7 +11,7 @@ Gem::Specification.new do |spec|
 
   spec.summary       = %q{a collection of monad implemented in ruby inspired by scala}
   spec.description   = %q{the collection provides class handling errors in ruby}
-  spec.homepage      = "http://github.com/lerencao/devergent.rb"
+  spec.homepage      = "http://github.com/lerencao/divergent.rb"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features)/}) }

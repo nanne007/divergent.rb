@@ -123,7 +123,7 @@ module Railway
       if empty?
         None
       else
-        Some.new(yield get)
+        Maybe.unit(yield get)
       end
     end
 

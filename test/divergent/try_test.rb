@@ -1,7 +1,7 @@
 require 'test_helper'
 
 class TryTest < Minitest::Test
-  include Railway
+  include Divergent
   def test_unit
     assert Try.unit(:a).is_a? Try
   end

@@ -1,7 +1,7 @@
 require_relative 'errors'
 require_relative 'monad'
 
-module Railway
+module Divergent
   ##
   # The `Try` type represents a computation that
   # may either result in an exception, or return a
@@ -282,7 +282,7 @@ module Railway
 end
 
 
-module Railway
+module Divergent
   ##
   # Constructs a `Try` by calling the passed block.  This
   # method will ensure any StandardError is caught and a

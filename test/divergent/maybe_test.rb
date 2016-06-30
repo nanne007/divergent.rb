@@ -1,7 +1,7 @@
 require 'test_helper'
 
 class MaybeTest < Minitest::Test
-  Maybe = Railway::Maybe
+  Maybe = Divergent::Maybe
 
   def test_empty
     assert Maybe.empty.empty?

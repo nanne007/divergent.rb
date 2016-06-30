@@ -1,4 +1,4 @@
-module Railway
+module Divergent
   ##
   # The module defines the interfaces that other class should implement.
   #

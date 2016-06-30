@@ -95,7 +95,7 @@ user.filter { |u| u.age > 20 }
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/lerencao/divergent.
+Bug reports and pull requests are welcome on GitHub at https://github.com/lerencao/divergent.rb.
 
 
 ## License

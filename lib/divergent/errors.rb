@@ -1,4 +1,4 @@
-module Railway
+module Divergent
   class UnSupportedOperationError < StandardError
   end
 

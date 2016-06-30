@@ -3,7 +3,7 @@ require 'singleton'
 require_relative 'errors'
 require_relative 'monad'
 
-module Railway
+module Divergent
   ##
   # Represents optional values. Instances of Maybe
   #  are either an instance of Some or the object None.
@@ -239,7 +239,7 @@ module Railway
   end.instance.freeze
 end
 
-module Railway
+module Divergent
   def Maybe(v)
     Maybe.unit(v)
   end

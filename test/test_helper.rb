@@ -1,4 +1,4 @@
 $LOAD_PATH.unshift File.expand_path('../../lib', __FILE__)
-require 'railway'
+require 'divergent'
 
 require 'minitest/autorun'

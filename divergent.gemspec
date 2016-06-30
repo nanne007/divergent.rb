@@ -1,17 +1,17 @@
 # coding: utf-8
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'railway/version'
+require 'divergent/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = "railway"
-  spec.version       = Railway::VERSION
+  spec.name          = "divergent"
+  spec.version       = Divergent::VERSION
   spec.authors       = ["Cao Jiafeng"]
   spec.email         = ["funfriendcjf@gmail.com"]
 
-  spec.summary       = %q{a collection of monad impl in ruby inspired by scala}
-  spec.description   = %q{the collection provides railway class for handling errors in ruby}
-  spec.homepage      = "http://github.com/lerencao/railway.rb"
+  spec.summary       = %q{a collection of monad implemented in ruby inspired by scala}
+  spec.description   = %q{the collection provides class handling errors in ruby}
+  spec.homepage      = "http://github.com/lerencao/devergent.rb"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features)/}) }

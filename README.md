@@ -1,4 +1,4 @@
-# Railway
+# Divergent
 
 A collection of monads for handling error in ruby.
 
@@ -7,7 +7,7 @@ A collection of monads for handling error in ruby.
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'railway'
+gem 'divergent'
 ```
 
 And then execute:
@@ -16,16 +16,16 @@ And then execute:
 
 Or install it yourself as:
 
-    $ gem install railway
+    $ gem install divergent
 
 ## Usage
 
 Using `Try`:
 
 ``` ruby
-require 'railway'
+require 'divergent'
 
-include Railway
+include Divergent
 
 require 'uri'
 def parse_url(url)
@@ -34,20 +34,20 @@ def parse_url(url)
   }
 end
 
-success_url = parse_url("http://www.google.com") # =>
+success_url = parse_url("http://www.google.com") # => Success<http://www.google.com>
 
-failed_url = parse_url(':google.com') #=>
+failed_url = parse_url(':google.com') #=> Failure<bad URI(is not URI?): :google.com>
 
 ### get_or_else
 
-failed_url.get_or_else URI('http://duckduckgo.com')
+failed_url.get_or_else URI('http://duckduckgo.com') #=> #<URI::HTTP http://duckduckgo.com>
 
 ### chainable operations
 
 # map
-success_url.map(&:scheme)
+success_url.map(&:scheme) #=> Success<http>
 
-failed_url.map(&:scheme)
+failed_url.map(&:scheme) #=> Failure<bad URI(is not URI?): :google.com>
 
 # fmap
 parse_url("http://thisisnotagoodsite.com").fmap do |url|
@@ -55,10 +55,13 @@ parse_url("http://thisisnotagoodsite.com").fmap do |url|
 end
 
 # each
-parse_url("http://google.com").each { |url| p url }
+parse_url("http://google.com").each { |url| p url.to_s }
+# =>
+# "http://google.com"
 
 # filter
-parse_url("http://google.com").filter { |url| url.scheme == "http" }
+parse_url("http://google.com").filter { |url| url.scheme == "http" }  #=> Success<http://google.com>
+parse_url("http://google.com").filter { |url| url.scheme == "https" } #=> Failure<Predicate does not hold for http://google.com>
 
 # recover from error
 failed_url.recover do |error|
@@ -70,7 +73,7 @@ failed_url.recover do |error|
   else
     :others
   end
-end
+end #=> Success<standard_error>
 ```
 
 
@@ -92,7 +95,7 @@ user.filter { |u| u.age > 20 }
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/lerencao/railway.
+Bug reports and pull requests are welcome on GitHub at https://github.com/lerencao/divergent.
 
 
 ## License

@@ -89,11 +89,17 @@ module Divergent
       raise NotImplementedError
     end
 
-    # Applies the given block if this is a `Failure`,
-    # otherwise returns this if this is a `Success`.
+    # Recover the given error classes by applying the block,
+    # and leave other error case unrecoverd.
+    # If no class is given, recover it anyway.
+    # The error instance(if this is a Failure) will be passed into the block.
+    # Otherwise returns this if this is a `Success`.
     #
     # This is like `fmap` for the exception.
-    def recover(&block)
+    # @param [Array] errors
+    # @param [Block] blk
+    # @return [Try]
+    def recover(*errors, &block)
       raise NotImplementedError
     end
 
@@ -176,7 +182,7 @@ module Divergent
       self
     end
 
-    def recover(&block)
+    def recover(*_errors, &block)
       self
     end
 
@@ -250,11 +256,20 @@ module Divergent
       end
     end
 
-    def recover()
-      t = yield(@error)
-      Success.new(t)
-    rescue => e
-      return Failure.new(e)
+    def recover(*errors)
+      unless errors.empty? || \
+             errors.any? { |clazz| @error.instance_of?(clazz) }
+        return self
+      end
+
+      raise 'no block given' unless block_given?
+
+      begin
+        t = yield(@error)
+        Success.new(t)
+      rescue => e
+        Failure.new(e)
+      end
     end
 
     def failed

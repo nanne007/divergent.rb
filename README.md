@@ -64,16 +64,13 @@ parse_url("http://google.com").filter { |url| url.scheme == "http" }  #=> Succes
 parse_url("http://google.com").filter { |url| url.scheme == "https" } #=> Failure<Predicate does not hold for http://google.com>
 
 # recover from error
-failed_url.recover do |error|
-  case error
-  when NoMethodError
-    :no_method
-  when StandardError
-    :standard_error
-  else
-    :others
-  end
-end #=> Success<standard_error>
+failed_url.recover(NoMethodError) { |error|
+  :no_method
+}.recover(StandardError) { |error|
+  :standard_error
+} #=> Success<standard_error>
+
+Try { 1 / 0 }.recover(ZeroDivisionError, &:message)
 ```
 
 

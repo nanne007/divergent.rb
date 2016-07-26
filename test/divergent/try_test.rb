@@ -93,6 +93,11 @@ class TryTest < Minitest::Test
 
     f = Try { raise 'failure' }
     assert_equal 2, f.recover { |ex| 2}.get
+    assert_equal f, f.recover(IOError, &:message)
+
+    recovered = f.recover(IOError, RuntimeError, &:message)
+    assert recovered.success?
+    assert_equal 'failure', recovered.get
   end
 
   def test_failed

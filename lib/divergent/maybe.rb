@@ -13,20 +13,6 @@ module Divergent
   # as a collection or monad and use `map`, `fmap`, `filter`, or `each`.
   class Maybe
     include Monad
-
-    ##
-    # An Maybe factory which return None.
-    #
-    # This always return the same None object.
-    #
-    # Example:
-    #
-    #   Maybe.empty == Maybe.empty
-    #
-    def self.empty
-      None
-    end
-
     ##
     # An factory which creates Some(v) if the argument is not nil,
     # and None if it is nil.
@@ -42,6 +28,20 @@ module Divergent
       else
         Some.new(v)
       end
+    end
+
+
+    ##
+    # An Maybe factory which return None.
+    #
+    # This always return the same None object.
+    #
+    # Example:
+    #
+    #   Maybe.empty == Maybe.empty
+    #
+    def self.empty
+      None
     end
 
     ##
@@ -118,11 +118,7 @@ module Divergent
     # This is similar to +flat_map+ except here,
     # block does not need to wrap its result in a maybe.
     def map() # :yields: v
-      if empty?
-        None
-      else
-        Maybe.unit(yield get)
-      end
+      fmap { |v| Maybe.unit(yield v) }
     end
 
 
@@ -130,10 +126,8 @@ module Divergent
     # Return this maybe if it is not empty and the predicate block evals to true.
     # Otherwise, return None.
     def filter() # :yields: v
-      if !empty? && yield(get)
-        self
-      else
-        None
+      fmap do |v|
+        yield(v) ? Maybe.unit(v) : None
       end
     end
 

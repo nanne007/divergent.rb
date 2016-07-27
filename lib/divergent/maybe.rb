@@ -5,24 +5,24 @@ require_relative 'monad'
 
 module Divergent
   ##
-  # Represents optional values. Instances of Maybe
-  #  are either an instance of Some or the object None.
+  # == Optional values.
   #
-  #  The most idiomatic way to use an Maybe instance is to treat it
-  #  as a collection or monad and use `map`, `fmap`, `filter`, or
-  #  `each`.
+  # An instance of Some or the object None.
+  #
+  # The most idiomatic way to use an Maybe instance is to treat it
+  # as a collection or monad and use `map`, `fmap`, `filter`, or `each`.
   class Maybe
     include Monad
 
     ##
     # An Maybe factory which return None.
+    #
     # This always return the same None object.
     #
     # Example:
     #
-    # ```
-    # Maybe.empty == Maybe.empty
-    # ```
+    #   Maybe.empty == Maybe.empty
+    #
     def self.empty
       None
     end
@@ -33,10 +33,9 @@ module Divergent
     #
     # Examples:
     #
-    # ```
-    # Maybe.unit(1)   # => Some(1)
-    # Maybe.unit(nil) # => None
-    # ```
+    #   Maybe.unit(1)   # => Some(1)
+    #   Maybe.unit(nil) # => None
+    #
     def self.unit(v)
       if v.nil?
         None
@@ -55,11 +54,10 @@ module Divergent
     #
     # Examples
     #
-    # ```
-    # Maybe.unit(1).fmap { |v| Maybe.unit(v + 1) } # => Some(2)
-    # some_hash = {}
-    # Maybe.unit(:a).fmap { |v| Maybe.unit(some_hash[v]) } # => None
-    # ```
+    #   Maybe.unit(1).fmap { |v| Maybe.unit(v + 1) } # => Some(2)
+    #   some_hash = {}
+    #   Maybe.unit(:a).fmap { |v| Maybe.unit(some_hash[v]) } # => None
+    #
     def fmap() # :yields: v
       if empty?
         None
@@ -144,11 +142,11 @@ module Divergent
     #
     # Examples:
     #
-    # ```
-    # Maybe.unit(1).include?(1) #=> true
-    # Maybe.unit(1).include?(2) #=> false
-    # Maybe.empty.include?(1) #=> false
-    # ```
+    #
+    #  Maybe.unit(1).include?(1) #=> true
+    #  Maybe.unit(1).include?(2) #=> false
+    #  Maybe.empty.include?(1) #=> false
+    #
     def include?(elem)
       !empty? && get == elem
     end
@@ -158,11 +156,11 @@ module Divergent
     #
     # Examples:
     #
-    # ```
-    # Maybe.unit(1).any?{ |v| v == 1} #=> true
-    # Maybe.unit(1).any?{ |v| v == 2} #=> false
-    # Maybe.empty.any?{ |v| v == 1} #=> false
-    # ```
+    #
+    #   Maybe.unit(1).any?{ |v| v == 1} #=> true
+    #   Maybe.unit(1).any?{ |v| v == 2} #=> false
+    #   Maybe.empty.any?{ |v| v == 1} #=> false
+    #
     def any?() # :yields: v
       !empty? && yield(get)
     end
@@ -173,11 +171,11 @@ module Divergent
     #
     # Examples:
     #
-    # ```
-    # Maybe.unit(1).all?{ |v| v == 1} #=> true
-    # Maybe.unit(1).all?{ |v| v == 2} #=> false
-    # Maybe.empty.all?{ |v| v == 1} #=> true
-    # ```
+    #
+    #   Maybe.unit(1).all?{ |v| v == 1} #=> true
+    #   Maybe.unit(1).all?{ |v| v == 2} #=> false
+    #   Maybe.empty.all?{ |v| v == 1} #=> true
+    #
     def all?() # :yields: v
       empty? || yield(get)
     end

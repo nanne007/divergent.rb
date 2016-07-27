@@ -4,10 +4,10 @@ module Divergent
   #
   # Examples:
   #
-  # ```
-  # Maybe.unit(1) # => Some(1)
-  # Maybe.unit(1).fmap { |v| v + 1 } => Some(2)
-  # ```
+  #
+  #   Maybe.unit(1) # => Some(1)
+  #   Maybe.unit(1).fmap { |v| v + 1 } => Some(2)
+  #
   module Monad
     def self.unit(v)
       raise NotImplementedError

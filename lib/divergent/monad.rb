@@ -9,12 +9,21 @@ module Divergent
   #   Maybe.unit(1).fmap { |v| v + 1 } => Some(2)
   #
   module Monad
-    def self.unit(v)
-      raise NotImplementedError
+    module InstanceMethods
+      def fmap(&f)
+        raise NotImplementedError
+      end
     end
 
-    def fmap(&f)
-      raise NotImplementedError
+    module ClassMethods
+      def unit(v)
+        raise NotImplementedError
+      end
+    end
+
+    def self.included(subclass)
+      subclass.extend ClassMethods
+      subclass.include InstanceMethods
     end
   end
 end

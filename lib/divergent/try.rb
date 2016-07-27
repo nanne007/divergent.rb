@@ -15,8 +15,10 @@ module Divergent
   # all of the places that an exception might occur.
   module Try
     include Monad
-    def self.unit(v)
-      Success.new(v)
+    def self.unit()
+      Success.new(yield)
+    rescue => e
+      Failure.new(e)
     end
 
     # Returns `true` if the `Try` is a `Failure`, `false` otherwise.
@@ -156,25 +158,18 @@ module Divergent
     end
 
     def map()
-      t = begin
-            yield(@value)
-          rescue => e
-            Failure.new(e)
-          end
-
-      Success.new(t)
+      fmap do |v|
+        Try.unit { yield v }
+      end
     end
 
     def filter()
-      p = begin
-            yield(@value)
-          rescue => e
-            return Failure.new(e)
-          end
-      if p
-        self
-      else
-        Failure.new(NoSuchElementError.new("Predicate does not hold for #{@value}"))
+      fmap do |v|
+        if yield(v)
+          self
+        else
+          Failure.new(NoSuchElementError.new("Predicate does not hold for #{v}"))
+        end
       end
     end
 
@@ -303,9 +298,7 @@ module Divergent
   # method will ensure any StandardError is caught and a
   # `Failure` object is returned.
   def Try
-    Success.new(yield)
-  rescue => e
-    Failure.new(e)
+    Try.unit { yield }
   end
   module_function :Try
 end

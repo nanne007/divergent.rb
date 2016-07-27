@@ -3,27 +3,27 @@ require 'test_helper'
 class TryTest < Minitest::Test
   include Divergent
   def test_unit
-    assert Try.unit(:a).is_a? Try
+    assert Try.unit { :a }.is_a? Try
   end
 
   def test_fmap
-    a = Try.unit(:a)
-    r = a.fmap { |x| Try.unit(x.to_sym) }
+    a = Try.unit { :a }
+    r = a.fmap { |x| Try.unit { x.to_sym } }
     assert r.is_a? Try
   end
 
   def test_failure
     assert Try { raise 'failure' }.failure?
-    assert !Try.unit(1).failure?
+    assert !Try { 1 }.failure?
   end
 
   def test_success
     assert !Try { raise 'failure' }.success?
-    assert Try.unit(1).success?
+    assert Try { 1 }.success?
   end
 
   def test_get_or_else
-    s = Try.unit(1)
+    s = Try { 1 }
     assert_equal 1, s.get_or_else(2)
 
     f = Try { raise 'failure' }
@@ -31,11 +31,11 @@ class TryTest < Minitest::Test
   end
 
   def test_or_else
-    s = Try.unit(1)
-    assert_equal s, s.or_else(Try.unit(2))
+    s = Try { 1 }
+    assert_equal s, s.or_else(Try { 2 })
 
     f = Try { raise 'failure' }
-    or_else = Try.unit(1)
+    or_else = Try { 1 }
     assert_equal or_else, f.or_else(or_else)
   end
 
@@ -80,10 +80,10 @@ class TryTest < Minitest::Test
 
   def test_recover_with
     s = Try { 1 }
-    assert_equal s, s.recover_with { |ex| Try.unit(2) }
+    assert_equal s, s.recover_with { |ex| Try { 2 } }
 
     f = Try { raise 'failure' }
-    with_this = Try.unit(2)
+    with_this = Try { 2 }
     assert_equal with_this, f.recover_with { |ex| with_this }
   end
 

@@ -79,9 +79,9 @@ Try { 1 / 0 }.recover(ZeroDivisionError, &:message)
 
 ``` ruby
 # provide default value
-user = Maybe.unit User.find('a_non_exist_id')
+user = Maybe(User.find('a_non_exist_id'))
 user.get_or_else(default_user)
-user.or_else(Maybe.unit User.find_by_name("username"))
+user.or_else Maybe(User.find_by_name("username"))
 
 # usage as a collection
 user.each { |u| p u}

@@ -86,6 +86,7 @@ module Divergent
     # otherwise returns this if this is a `Success`.
     #
     # Notes: block call should return an instance of Try.
+    # And, error raised from the block call will not rescued by it!
     # This is like `fmap` for the exception.
     def recover_with(&block)
       raise NotImplementedError
@@ -95,6 +96,7 @@ module Divergent
     # and leave other error case unrecoverd.
     # If no class is given, recover it anyway.
     # The error instance(if this is a Failure) will be passed into the block.
+    # And, error raised from the block call will not rescued by it!
     # Otherwise returns this if this is a `Success`.
     #
     # This is like `fmap` for the exception.
@@ -244,11 +246,7 @@ module Divergent
     end
 
     def recover_with()
-      begin
-        yield(@error)
-      rescue => e
-        Failure.new(e)
-      end
+      yield(@error)
     end
 
     def recover(*errors)
@@ -259,12 +257,8 @@ module Divergent
 
       raise 'no block given' unless block_given?
 
-      begin
-        t = yield(@error)
-        Success.new(t)
-      rescue => e
-        Failure.new(e)
-      end
+      t = yield(@error)
+      Success.new(t)
     end
 
     def failed

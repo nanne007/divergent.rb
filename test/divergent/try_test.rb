@@ -85,6 +85,10 @@ class TryTest < Minitest::Test
     f = Try { raise 'failure' }
     with_this = Try { 2 }
     assert_equal with_this, f.recover_with { |ex| with_this }
+
+    assert_raises {
+      f.recover_with { |ex| raise 'cannot recover with it' }
+    }
   end
 
   def test_recover
@@ -98,6 +102,10 @@ class TryTest < Minitest::Test
     recovered = f.recover(IOError, RuntimeError, &:message)
     assert recovered.success?
     assert_equal 'failure', recovered.get
+
+    assert_raises {
+      f.recover { |ex| raise 'cannot recover it' }
+    }
   end
 
   def test_failed

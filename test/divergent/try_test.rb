@@ -85,7 +85,7 @@ class TryTest < Minitest::Test
     f = Try { raise 'failure' }
     with_this = Try { 2 }
     assert_equal with_this, f.recover_with { |ex| with_this }
-
+    assert_equal f, f.recover_with(EncodingError) { |ex| with_this }
     assert_raises {
       f.recover_with { |ex| raise 'cannot recover with it' }
     }

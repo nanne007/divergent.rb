@@ -88,7 +88,10 @@ module Divergent
     # Notes: block call should return an instance of Try.
     # And, error raised from the block call will not rescued by it!
     # This is like `fmap` for the exception.
-    def recover_with(&block)
+    # @param [Array] errors
+    # @param [Block] blk, this blk should return an instance of Try
+    # @return [Try] block call result
+    def recover_with(*errors, &block)
       raise NotImplementedError
     end
 
@@ -99,7 +102,7 @@ module Divergent
     # And, error raised from the block call will not rescued by it!
     # Otherwise returns this if this is a `Success`.
     #
-    # This is like `fmap` for the exception.
+    # This is like `map` for the exception.
     # @param [Array] errors
     # @param [Block] blk
     # @return [Try]
@@ -188,11 +191,7 @@ module Divergent
     end
 
     def transform(s, _f)
-      begin
-        s.call(@value)
-      rescue => e
-        Failure.new(e)
-      end
+      fmap(&s)
     end
 
     def flatten
@@ -245,7 +244,12 @@ module Divergent
       self
     end
 
-    def recover_with()
+    def recover_with(*errors)
+      unless errors.empty? || \
+             errors.any? { |clazz| @error.instance_of?(clazz) }
+        return self
+      end
+
       yield(@error)
     end
 
@@ -254,8 +258,6 @@ module Divergent
              errors.any? { |clazz| @error.instance_of?(clazz) }
         return self
       end
-
-      raise 'no block given' unless block_given?
 
       t = yield(@error)
       Success.new(t)

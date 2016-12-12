@@ -86,6 +86,9 @@ class TryTest < Minitest::Test
     with_this = Try { 2 }
     assert_equal with_this, f.recover_with { |ex| with_this }
     assert_equal f, f.recover_with(EncodingError) { |ex| with_this }
+
+    assert_equal with_this, f.recover_with(StandardError) { |_| with_this }
+
     assert_raises {
       f.recover_with { |ex| raise 'cannot recover with it' }
     }
@@ -102,6 +105,9 @@ class TryTest < Minitest::Test
     recovered = f.recover(IOError, RuntimeError, &:message)
     assert recovered.success?
     assert_equal 'failure', recovered.get
+
+    recover_supclass = f.recover(StandardError, &:message)
+    assert recover_supclass.success?
 
     assert_raises {
       f.recover { |ex| raise 'cannot recover it' }

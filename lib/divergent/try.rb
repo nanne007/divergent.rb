@@ -246,7 +246,7 @@ module Divergent
 
     def recover_with(*errors)
       unless errors.empty? || \
-             errors.any? { |clazz| @error.instance_of?(clazz) }
+             errors.any? { |clazz| @error.is_a?(clazz) }
         return self
       end
 
@@ -255,7 +255,7 @@ module Divergent
 
     def recover(*errors)
       unless errors.empty? || \
-             errors.any? { |clazz| @error.instance_of?(clazz) }
+             errors.any? { |clazz| @error.is_a?(clazz) }
         return self
       end
 
